@@ -1,7 +1,6 @@
 module.exports = {
   'env': {
-    'browser': true,
-    'commonjs': true,
+    'node': true,
     'es6': true
   },
   'extends': 'standard',
@@ -13,5 +12,6 @@ module.exports = {
     'ecmaVersion': 2018
   },
   'rules': {
+    'object-curly-spacing': ['error', 'never']
   }
 }
