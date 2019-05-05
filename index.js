@@ -1,19 +1,34 @@
 const express = require('express')
 const app = express()
-const {getImagesFromAlbum} = require('./imgur')
+const { getImagesFromAlbum } = require('./imgur')
 
 const albums = new Map()
+const buildResponse = url => `
+  <html prefix="og: http://ogp.me/ns#">  
+    <head>
+      <meta property="og:type" content = "article" />
+      <meta property="og:image:width" content = "1000" />
+      <meta property="og:image:height" content = "1000" />
+      <meta property="og:image" content = "${url}" />
+      <meta name="twitter:card" content = "summary_large_image" />
+      <meta name="twitter:image" content = "${url}" />
+    </head>
+    <body>
+      <img src="${url}">
+    </body>
+  </html>`
 
-app.get('/:albumId', ({params: {albumId}}, res) => {
+app.get('/:albumId', ({ params: { albumId } }, res) => {
   if (albums.has(albumId)) {
     const images = albums.get(albumId)
-    res.send(`<img src=${images[Math.random(0, images.length)]}>`)
+    const randNum = Math.floor(Math.random() * images.length)
+    res.send(buildResponse(images[randNum]))
   } else {
     res.status(404).end()
   }
 })
 
-app.post('/:albumId', ({params: {albumId}}, res) => {
+app.post('/:albumId', ({ params: { albumId } }, res) => {
   if (albums.has(albumId)) {
     res.status(201).end()
   } else {
@@ -24,6 +39,5 @@ app.post('/:albumId', ({params: {albumId}}, res) => {
       })
   }
 })
-    
-app.listen(3000)
 
+app.listen(3000)
