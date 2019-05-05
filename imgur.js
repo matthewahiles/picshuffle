@@ -10,6 +10,5 @@ const options = (albumId) => ({
 const getImagesFromAlbum = (albumId) =>
   rp(options(albumId))
     .then(({ data }) => data.images.map(({ link }) => link))
-    .tap(console.log)
 
 module.exports = { getImagesFromAlbum }

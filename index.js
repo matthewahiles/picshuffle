@@ -33,6 +33,7 @@ app.post('/:albumId', ({ params: { albumId } }, res) => {
     res.status(201).end()
   } else {
     getImagesFromAlbum(albumId)
+      .tap(images => console.log(`Adding ${images.length} images for album ${albumId}`))
       .then(images => albums.set(albumId, images))
       .then(() => {
         res.status(201).end()
@@ -40,4 +41,4 @@ app.post('/:albumId', ({ params: { albumId } }, res) => {
   }
 })
 
-app.listen(3000)
+app.listen(3000, () => console.log('Server listening on 3000'))
